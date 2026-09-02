@@ -63,16 +63,38 @@ backToTop.addEventListener("click", () => {
 
 const form = document.getElementById("enquiryForm");
 
-form.addEventListener("submit", function (event) {
+form.addEventListener("submit", async function(e) {
 
-    event.preventDefault();
+    e.preventDefault();
 
-    alert(
-        "Thank you for your enquiry!\n\n" +
-        "Aram Computer Education will contact you soon."
-    );
+    const data = {
+        name: form.querySelector('[name="name"]').value,
+        mobile: form.querySelector('[name="mobile"]').value,
+        course: form.querySelector('[name="course"]').value,
+        message: form.querySelector('[name="message"]').value
+    };
 
-    form.reset();
+    try {
+
+        await fetch("https://script.google.com/macros/s/AKfycbySKzc4S7KZQs8lyFsGOCPbAjkTwjO6v15SeEOUBP3Oku-_0TSdHE3pr2S_CU_QyFCU/exec", {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: JSON.stringify(data)
+        });
+
+        alert("Enquiry submitted successfully! ✅");
+
+        form.reset();
+
+    } catch (error) {
+
+        alert("Something went wrong. Please try again.");
+
+        console.error(error);
+    }
 
 });
 
